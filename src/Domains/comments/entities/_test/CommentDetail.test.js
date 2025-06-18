@@ -20,6 +20,7 @@ describe('CommentDetail entities', () => {
       username: commentUsername,
       content: commentContent,
       replies: 'some replies',
+      like_count: 0,
     };
 
     const invalidCreatedAtPayload = {
@@ -38,6 +39,7 @@ describe('CommentDetail entities', () => {
       id: commentId,
       username: commentUsername,
       content: commentContent,
+      like_count: 0,
       replies: [
         { id: 'reply-1', username: 'userA', content: 'Reply A' },
         'this is a string in the array',
@@ -57,6 +59,7 @@ describe('CommentDetail entities', () => {
       id: commentId,
       username: commentUsername,
       content: commentContent,
+      like_count: 0,
       replies: [
         {
           id: 'replies-1',
@@ -79,6 +82,7 @@ describe('CommentDetail entities', () => {
     expect(commentDetail.replies).toEqual(payload.replies);
     expect(commentDetail.created_at).toEqual(payload.created_at);
     expect(commentDetail.updated_at).toEqual(payload.updated_at);
+    expect(commentDetail.like_count).toEqual(payload.like_count);
   });
 
   it('should create deleted CommentDetail entities correctly', () => {
@@ -86,6 +90,7 @@ describe('CommentDetail entities', () => {
       id: commentId,
       username: commentUsername,
       content: commentContent,
+      like_count: 0,
       replies: [
         {
           id: 'replies-1',
@@ -119,6 +124,7 @@ describe('CommentDetail entities', () => {
       replies: [],
       created_at: '2021-08-08T07:19:09.775Z',
       updated_at: '2021-08-08T07:19:09.775Z',
+      like_count: 0,
     };
 
     const payloadWithDeletedProperties = {

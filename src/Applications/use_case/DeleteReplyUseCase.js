@@ -13,7 +13,7 @@ class DeleteReplyUseCase {
     await this._replyRepository.checkAvailability(commentId, replyId);
     await this._replyRepository.verifyOwnership(replyId, userId);
 
-    this._replyRepository.deleteById(replyId);
+    await this._replyRepository.deleteById(replyId);
   }
 }
 

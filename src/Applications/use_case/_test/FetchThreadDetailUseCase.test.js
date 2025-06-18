@@ -5,6 +5,7 @@ const CommentRepository = require('../../../Domains/comments/CommentRepository')
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
 const CommentDetail = require('../../../Domains/comments/entities/CommentDetail');
 const ReplyDetail = require('../../../Domains/replies/entities/ReplyDetail');
+const CommentLikeRepository = require('../../../Domains/commentLikes/CommentLikeRepository');
 
 describe('FetchThreadDetailUseCase', () => {
   it('should orchestrating the get thread detail action correctly', async () => {
@@ -70,18 +71,39 @@ describe('FetchThreadDetailUseCase', () => {
       },
     ];
 
+    const mockCommentLikes = [
+      {
+        id: 'like-1',
+        owner: 'user-1',
+        comment_id: 'comment-1',
+      },
+      {
+        id: 'like-2',
+        owner: 'user-2',
+        comment_id: 'comment-1',
+      },
+      {
+        id: 'like-3',
+        owner: 'user-1',
+        comment_id: 'comment-2',
+      },
+    ];
+
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockCommentLikeRepository = new CommentLikeRepository();
 
     mockThreadRepository.fetchById = jest.fn(() => Promise.resolve(mockThreadDetail));
     mockCommentRepository.fetchByThreadId = jest.fn(() => Promise.resolve(mockComments));
     mockReplyRepository.fetchByThreadId = jest.fn(() => Promise.resolve(mockReplies));
+    mockCommentLikeRepository.fetchByThreadId = jest.fn(() => Promise.resolve(mockCommentLikes));
 
     const fetchThreadDetailUseCase = new FetchThreadDetailUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
+      commentLikeRepository: mockCommentLikeRepository,
     });
 
     const threadDetail = await fetchThreadDetailUseCase.execute('thread-1');
@@ -100,6 +122,7 @@ describe('FetchThreadDetailUseCase', () => {
           created_at: '2025-01-07T00:00:00.000Z',
           updated_at: '2025-01-07T00:00:00.000Z',
           content: 'comment',
+          like_count: 2,
           replies: [
             new ReplyDetail({
               id: 'reply-1',
@@ -123,6 +146,7 @@ describe('FetchThreadDetailUseCase', () => {
           created_at: '2025-01-08T00:00:00.000Z',
           updated_at: '2025-01-08T00:00:00.000Z',
           content: '**komentar telah dihapus**',
+          like_count: 1,
           replies: [],
         }).format(),
       ],
