@@ -314,6 +314,14 @@ describe('ReplyRepositoryPostgres', () => {
       expect(replies[1].owner).toEqual(otherUserId);
 
       expect(replies[2]).toBeUndefined();
+      expect(replies[2]?.id).toBeUndefined();
+      expect(replies[2]?.username).toBeUndefined();
+      expect(replies[2]?.content).toBeUndefined();
+      expect(replies[2]?.created_at).toBeUndefined();
+      expect(replies[2]?.updated_at).toBeUndefined();
+      expect(replies[2]?.is_delete).toBeUndefined();
+      expect(replies[2]?.comment_id).toBeUndefined();
+      expect(replies[2]?.owner).toBeUndefined();
     });
   });
 
