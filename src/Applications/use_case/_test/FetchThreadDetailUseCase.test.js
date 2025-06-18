@@ -41,6 +41,7 @@ describe('FetchThreadDetailUseCase', () => {
       {
         id: 'reply-1',
         username: 'user-2',
+        owner: 'user-2',
         created_at: '2025-01-08T00:00:00.000Z',
         updated_at: '2025-01-08T00:00:00.000Z',
         content: 'reply',
@@ -50,6 +51,7 @@ describe('FetchThreadDetailUseCase', () => {
       {
         id: 'reply-2',
         username: 'user-1',
+        owner: 'user-1',
         created_at: '2025-01-09T00:00:00.000Z',
         updated_at: '2025-01-09T00:00:00.000Z',
         content: 'deleted',
@@ -59,6 +61,7 @@ describe('FetchThreadDetailUseCase', () => {
       {
         id: 'reply-3',
         username: 'user-1',
+        owner: 'user-1',
         created_at: '2025-01-09T00:00:00.000Z',
         updated_at: '2025-01-09T00:00:00.000Z',
         content: 'reply',

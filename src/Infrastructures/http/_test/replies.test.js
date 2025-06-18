@@ -144,8 +144,6 @@ describe('replies endpoint', () => {
     });
 
     it('should response 404 if comment is not valid or deleted', async () => {
-      const requestPayload = { content: 'A reply' };
-
       const { accessToken, userId } = await authenticationTestHelper.login();
 
       await ThreadsTableTestHelper.create({ ...sampleThread, owner: userId });

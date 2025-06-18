@@ -29,7 +29,22 @@ describe('ThreadDetail entities', () => {
       comments: 'String comment',
     };
 
+    const payloadWithInvalidComments = {
+      id: threadId,
+      title: threadTitle,
+      body: threadBody,
+      created_at: threadDate,
+      updated_at: threadDate,
+      username: '123456',
+      comments: [
+        { id: 'comments-1', username: 'userA', content: 'Comment A' },
+        'this is a string in the array',
+        { id: 'comments-2', username: 'userB', content: 'Comment B' },
+      ],
+    };
+
     expect(() => new ThreadDetail(payload)).toThrowError('THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    expect(() => new ThreadDetail(payloadWithInvalidComments)).toThrowError('THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
   it('should create ThreadDetail entities correctly', () => {

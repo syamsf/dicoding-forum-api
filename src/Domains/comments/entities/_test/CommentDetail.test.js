@@ -110,4 +110,43 @@ describe('CommentDetail entities', () => {
     expect(formattedCommentDetail.username).toEqual(payload.username);
     expect(formattedCommentDetail.replies).toEqual(payload.replies);
   });
+
+  it('should return correctly ReplyDetail entities with deleted properties correctly', () => {
+    const payload = {
+      id: commentId,
+      username: commentUsername,
+      content: commentContent,
+      replies: [],
+      created_at: '2021-08-08T07:19:09.775Z',
+      updated_at: '2021-08-08T07:19:09.775Z',
+    };
+
+    const payloadWithDeletedProperties = {
+      ...payload,
+      is_delete: new Date().toISOString(),
+    };
+
+    const payloadWithNullDeletedProperties = {
+      ...payload,
+      is_delete: null,
+    };
+
+    const commentsDetailWithDeleted = new CommentDetail(payloadWithDeletedProperties);
+    const formattedCommentsDetailWithDeleted = commentsDetailWithDeleted.format();
+
+    const commentsDetailWithNullDeleted = new CommentDetail(payloadWithNullDeletedProperties);
+    const formattedCommentsDetailWithNullDeleted = commentsDetailWithNullDeleted.format();
+
+    expect(commentsDetailWithDeleted).toBeInstanceOf(CommentDetail);
+    expect(formattedCommentsDetailWithDeleted.id).toEqual(payload.id);
+    expect(formattedCommentsDetailWithDeleted.username).toEqual(payload.username);
+    expect(formattedCommentsDetailWithDeleted.content).toEqual('**komentar telah dihapus**');
+    expect(formattedCommentsDetailWithDeleted.date).toEqual(payload.created_at);
+
+    expect(commentsDetailWithNullDeleted).toBeInstanceOf(CommentDetail);
+    expect(formattedCommentsDetailWithNullDeleted.id).toEqual(payload.id);
+    expect(formattedCommentsDetailWithNullDeleted.username).toEqual(payload.username);
+    expect(formattedCommentsDetailWithNullDeleted.content).toEqual(payload.content);
+    expect(formattedCommentsDetailWithNullDeleted.date).toEqual(payload.created_at);
+  });
 });
