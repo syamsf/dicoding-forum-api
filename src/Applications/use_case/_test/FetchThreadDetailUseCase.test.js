@@ -13,7 +13,7 @@ describe('FetchThreadDetailUseCase', () => {
       title: 'Thread title',
       body: 'Thread body',
       created_at: '2025-01-07T00:00:00.000Z',
-      date: '2025-01-07T00:00:00.000Z',
+      updated_at: '2025-01-07T00:00:00.000Z',
       username: 'user-1',
     };
 
@@ -21,8 +21,8 @@ describe('FetchThreadDetailUseCase', () => {
       {
         id: 'comment-1',
         username: 'user-2',
-        date: '2025-01-07T00:00:00.000Z',
         created_at: '2025-01-07T00:00:00.000Z',
+        updated_at: '2025-01-07T00:00:00.000Z',
         content: 'comment',
         is_delete: null,
       },
@@ -31,6 +31,7 @@ describe('FetchThreadDetailUseCase', () => {
         username: 'user-1',
         date: '2025-01-08T00:00:00.000Z',
         created_at: '2025-01-08T00:00:00.000Z',
+        updated_at: '2025-01-08T00:00:00.000Z',
         content: 'deleted',
         is_delete: '2025-01-09T00:00:00.000Z',
       },
@@ -40,8 +41,8 @@ describe('FetchThreadDetailUseCase', () => {
       {
         id: 'reply-1',
         username: 'user-2',
-        date: '2025-01-08T00:00:00.000Z',
         created_at: '2025-01-08T00:00:00.000Z',
+        updated_at: '2025-01-08T00:00:00.000Z',
         content: 'reply',
         comment_id: 'comment-1',
         is_delete: null,
@@ -49,8 +50,8 @@ describe('FetchThreadDetailUseCase', () => {
       {
         id: 'reply-2',
         username: 'user-1',
-        date: '2025-01-09T00:00:00.000Z',
         created_at: '2025-01-09T00:00:00.000Z',
+        updated_at: '2025-01-09T00:00:00.000Z',
         content: 'deleted',
         comment_id: 'comment-1',
         is_delete: '2025-01-09T00:00:00.000Z',
@@ -58,8 +59,8 @@ describe('FetchThreadDetailUseCase', () => {
       {
         id: 'reply-3',
         username: 'user-1',
-        date: '2025-01-09T00:00:00.000Z',
         created_at: '2025-01-09T00:00:00.000Z',
+        updated_at: '2025-01-09T00:00:00.000Z',
         content: 'reply',
         comment_id: 'comment-2',
         is_delete: null,
@@ -86,38 +87,43 @@ describe('FetchThreadDetailUseCase', () => {
       id: 'thread-1',
       title: 'Thread title',
       body: 'Thread body',
-      date: '2025-01-07T00:00:00.000Z',
+      created_at: '2025-01-07T00:00:00.000Z',
+      updated_at: '2025-01-07T00:00:00.000Z',
       username: 'user-1',
       comments: [
         new CommentDetail({
           id: 'comment-1',
           username: 'user-2',
-          date: '2025-01-07T00:00:00.000Z',
+          created_at: '2025-01-07T00:00:00.000Z',
+          updated_at: '2025-01-07T00:00:00.000Z',
           content: 'comment',
           replies: [
             new ReplyDetail({
               id: 'reply-1',
               username: 'user-2',
               content: 'reply',
-              date: '2025-01-08T00:00:00.000Z',
-            }),
+              created_at: '2025-01-08T00:00:00.000Z',
+              updated_at: '2025-01-08T00:00:00.000Z',
+            }).format(),
             new ReplyDetail({
               id: 'reply-2',
               username: 'user-1',
-              date: '2025-01-09T00:00:00.000Z',
+              created_at: '2025-01-09T00:00:00.000Z',
+              updated_at: '2025-01-09T00:00:00.000Z',
               content: '**balasan telah dihapus**',
-            }),
+            }).format(),
           ],
-        }),
+        }).format(),
         new CommentDetail({
           id: 'comment-2',
           username: 'user-1',
-          date: '2025-01-08T00:00:00.000Z',
+          created_at: '2025-01-08T00:00:00.000Z',
+          updated_at: '2025-01-08T00:00:00.000Z',
           content: '**komentar telah dihapus**',
           replies: [],
-        }),
+        }).format(),
       ],
-    }));
+    }).format());
 
     expect(mockThreadRepository.fetchById).toBeCalledWith('thread-1');
     expect(mockCommentRepository.fetchByThreadId).toBeCalledWith('thread-1');

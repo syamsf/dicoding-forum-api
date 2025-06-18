@@ -16,14 +16,26 @@ describe('ReplyDetail entities', () => {
   });
 
   it('should throw error when payload does not meet data type requirements', () => {
-    const payload = {
+    const defaultPayload = {
       id: replyId,
       username: replyUsername,
       content: replyContent,
-      date: 1,
     };
 
-    expect(() => new ReplyDetail(payload)).toThrowError('REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    const invalidCreatedAtPayload = {
+      ...defaultPayload,
+      created_at: 1,
+      updated_at: new Date().toISOString(),
+    };
+
+    const invalidUpdatedAtPayload = {
+      ...defaultPayload,
+      created_at: new Date().toISOString(),
+      updated_at: 1,
+    };
+
+    expect(() => new ReplyDetail(invalidCreatedAtPayload)).toThrowError('REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    expect(() => new ReplyDetail(invalidUpdatedAtPayload)).toThrowError('REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
   it('should create ReplyDetail entities correctly', () => {
@@ -31,7 +43,8 @@ describe('ReplyDetail entities', () => {
       id: replyId,
       username: replyUsername,
       content: replyContent,
-      date: replyDate,
+      created_at: replyDate,
+      updated_at: replyDate,
     };
 
     const replyDetail = new ReplyDetail(payload);
@@ -40,7 +53,8 @@ describe('ReplyDetail entities', () => {
     expect(replyDetail.id).toEqual(payload.id);
     expect(replyDetail.username).toEqual(payload.username);
     expect(replyDetail.content).toEqual(payload.content);
-    expect(replyDetail.date).toEqual(payload.date);
+    expect(replyDetail.created_at).toEqual(payload.created_at);
+    expect(replyDetail.updated_at).toEqual(payload.updated_at);
   });
 
   it('should create deleted ReplyDetail entities correctly', () => {
@@ -48,16 +62,18 @@ describe('ReplyDetail entities', () => {
       id: replyId,
       username: replyUsername,
       content: replyContent,
-      date: replyDate,
-      is_delete: true,
+      created_at: replyDate,
+      updated_at: replyDate,
+      is_delete: replyDate,
     };
 
     const replyDetail = new ReplyDetail(payload);
+    const formattedReplyDetail = replyDetail.format();
 
     expect(replyDetail).toBeInstanceOf(ReplyDetail);
-    expect(replyDetail.id).toEqual(payload.id);
-    expect(replyDetail.username).toEqual(payload.username);
-    expect(replyDetail.content).toEqual('**balasan telah dihapus**');
-    expect(replyDetail.date).toEqual(payload.date);
+    expect(formattedReplyDetail.id).toEqual(payload.id);
+    expect(formattedReplyDetail.username).toEqual(payload.username);
+    expect(formattedReplyDetail.content).toEqual('**balasan telah dihapus**');
+    expect(formattedReplyDetail.date).toEqual(payload.created_at);
   });
 });

@@ -30,7 +30,7 @@ describe('CommentRepositoryPostgres', () => {
 
       await expect(commentRepositoryPostgres.checkAvailability(commentId, threadId))
         .rejects
-        .toThrowError(NotFoundError);
+        .toThrowError(new NotFoundError('Comment not found'));
     });
 
     it('should throw NotFoundError when comment is deleted', async () => {
@@ -63,7 +63,7 @@ describe('CommentRepositoryPostgres', () => {
 
       await expect(commentRepositoryPostgres.checkAvailability('not-exist', commentId))
         .rejects
-        .toThrowError(NotFoundError);
+        .toThrowError(new NotFoundError('Comment not found based on given thread'));
     });
 
     it('should not throw NotFoundError when comment available', async () => {
@@ -185,11 +185,15 @@ describe('CommentRepositoryPostgres', () => {
       expect(comments[0].username).toBe('username2');
       expect(comments[0].content).toBe('old comment');
       expect(comments[0].created_at).toBeTruthy();
+      expect(comments[0].updated_at).toBeTruthy();
+      expect(comments[0].is_delete).toBeFalsy();
 
       expect(comments[1].id).toBe('new-comment');
       expect(comments[1].username).toBe('username');
       expect(comments[1].content).toBe('new comment');
       expect(comments[1].created_at).toBeTruthy();
+      expect(comments[1].updated_at).toBeTruthy();
+      expect(comments[1].is_delete).toBeFalsy();
     });
   });
 
@@ -212,8 +216,11 @@ describe('CommentRepositoryPostgres', () => {
       await commentRepositoryPostgres.deleteById(commentId);
 
       const comments = await CommentsTableTestHelper.fetchById(commentId);
+      const deletedAt = new Date(comments[0].is_delete).toISOString().slice(0, 10);
+
       expect(comments).toHaveLength(1);
       expect(typeof comments[0].is_delete).toEqual('string');
+      expect(new Date().toISOString().slice(0, 10)).toEqual(deletedAt);
     });
   });
 });

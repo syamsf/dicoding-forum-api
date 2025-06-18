@@ -62,7 +62,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async fetchByThreadId(threadId) {
     const query = {
-      text: `SELECT comments.id, users.username, comments.created_at, comments.content, comments.is_delete 
+      text: `SELECT comments.id, users.username, comments.created_at, comments.updated_at, comments.content, comments.is_delete 
         FROM comments LEFT JOIN users ON users.id = comments.owner 
         WHERE comments.thread_id = $1 
         ORDER BY comments.created_at ASC

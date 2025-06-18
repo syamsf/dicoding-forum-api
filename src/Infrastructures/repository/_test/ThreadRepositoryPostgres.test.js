@@ -105,6 +105,7 @@ describe('ThreadRepositoryPostgres', () => {
       expect(thread.title).toStrictEqual(threadTitle);
       expect(thread.body).toStrictEqual(threadBody);
       expect(thread.created_at).toBeTruthy();
+      expect(thread.updated_at).toBeTruthy();
       expect(thread.username).toStrictEqual('username');
     });
   });

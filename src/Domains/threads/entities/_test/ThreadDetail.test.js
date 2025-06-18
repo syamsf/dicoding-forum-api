@@ -23,7 +23,8 @@ describe('ThreadDetail entities', () => {
       id: threadId,
       title: threadTitle,
       body: threadBody,
-      date: threadDate,
+      created_at: threadDate,
+      updated_at: threadDate,
       username: 123456,
       comments: 'String comment',
     };
@@ -36,14 +37,24 @@ describe('ThreadDetail entities', () => {
       id: threadId,
       title: threadTitle,
       body: threadBody,
-      date: threadDate,
+      created_at: threadDate,
+      updated_at: threadDate,
       username: threadOwner,
       comments: [],
     };
 
     const threadDetail = new ThreadDetail(payload);
+    const threadDetailFormatted = threadDetail.format();
 
     expect(threadDetail).toBeInstanceOf(ThreadDetail);
     expect(threadDetail).toStrictEqual(new ThreadDetail(payload));
+    expect(threadDetailFormatted).toStrictEqual({
+      id: threadId,
+      title: threadTitle,
+      body: threadBody,
+      date: threadDate,
+      username: threadOwner,
+      comments: [],
+    });
   });
 });

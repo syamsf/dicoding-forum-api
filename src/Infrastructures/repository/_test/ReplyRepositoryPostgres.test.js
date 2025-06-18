@@ -234,11 +234,15 @@ describe('ReplyRepositoryPostgres', () => {
       expect(replies[0].username).toBe('username-1');
       expect(replies[0].content).toBe('new reply');
       expect(replies[0].created_at).toBeTruthy();
+      expect(replies[0].updated_at).toBeTruthy();
+      expect(replies[0].is_delete).toBeNull();
 
       expect(replies[1].id).toBe('reply-2');
       expect(replies[1].username).toBe('username-2');
       expect(replies[1].content).toBe('new reply 2');
       expect(replies[1].created_at).toBeTruthy();
+      expect(replies[1].updated_at).toBeTruthy();
+      expect(replies[1].is_delete).toBeNull();
     });
   });
 
@@ -295,11 +299,19 @@ describe('ReplyRepositoryPostgres', () => {
       expect(replies[0].username).toBe('username-1');
       expect(replies[0].content).toBe('reply-1');
       expect(replies[0].created_at).toBeTruthy();
+      expect(replies[0].updated_at).toBeTruthy();
+      expect(replies[0].is_delete).toBeNull();
+      expect(replies[0].comment_id).toEqual(commentId);
+      expect(replies[0].owner).toEqual(userId);
 
       expect(replies[1].id).toBe('reply-2');
       expect(replies[1].username).toBe('username-2');
       expect(replies[1].content).toBe('reply-2');
       expect(replies[1].created_at).toBeTruthy();
+      expect(replies[1].updated_at).toBeTruthy();
+      expect(replies[1].is_delete).toBeNull();
+      expect(replies[1].comment_id).toEqual(commentId);
+      expect(replies[1].owner).toEqual(otherUserId);
 
       expect(replies[2]).toBeUndefined();
     });
@@ -329,8 +341,10 @@ describe('ReplyRepositoryPostgres', () => {
       await replyRepositoryPostgres.deleteById(replyId);
 
       const replies = await RepliesTableTestHelper.fetchById(replyId);
+      const deletedAt = new Date(replies[0].is_delete).toISOString().slice(0, 10);
       expect(replies).toHaveLength(1);
       expect(typeof replies[0].is_delete).toEqual('string');
+      expect(new Date().toISOString().slice(0, 10)).toEqual(deletedAt);
     });
   });
 });

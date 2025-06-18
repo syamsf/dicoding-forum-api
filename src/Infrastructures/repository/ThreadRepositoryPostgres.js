@@ -39,7 +39,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
   async fetchById(id) {
     const query = {
-      text: `SELECT threads.id, threads.title, threads.body, threads.created_at, users.username 
+      text: `SELECT threads.id, threads.title, threads.body, threads.created_at, threads.updated_at, users.username 
         FROM threads
         LEFT JOIN users ON users.id = threads.owner 
         WHERE threads.id = $1
